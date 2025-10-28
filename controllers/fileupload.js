@@ -45,7 +45,7 @@ function isFileTypeSupported(type,supportedTypes){
 async function uploadFileToCloudinary(file,folder,quality){
     const options = {folder};
     console.log("temp file path :",file.tempFilePath)
-    options.resourse_type="auto";
+    options.resource_type="auto";
     if(quality){
         options.quality = quality;
     }
