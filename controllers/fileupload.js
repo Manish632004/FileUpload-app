@@ -68,18 +68,30 @@ exports.imageUpload =async(req,res)=>{
         const supportedTypes = ["jpg","jpeg","png"];
         const fileType = file.name.split(".")[1].toLowerCase();
         console.log(fileType)
+    
 
         if(!isFileTypeSupported(fileType,supportedTypes)){
             return res.status(400).json({
                 success:false,
                 message:"Unsupported file type"})
         }
+        // upper limit of 5mb 
+        const limit = 5*1024*1024;
+        if(limit<file.size){
+            return res.status(400).json({
+                success:false,
+                message:"image size is larger than 5mb"
+
+            })
+        }
 
         // file format supported
         console.log("uploading to cloudinary")
 
         const response = await uploadFileToCloudinary(file,"codehelp");
+    
         console.log(response);
+
 
         //db me entry save karni hai 
 
@@ -128,6 +140,14 @@ exports.videoUpload = async (req,res)=>{
         console.log("fileType",fileType)
 
         // todo : add a upper limit  of 5 mb for video 
+
+        const limit = 5*1024*1024;
+        if(limit<file.size){
+            return res.status(400).json({
+                success:false,
+                message:"file size is larger than 5mb"
+            })
+        }
         if(!isFileTypeSupported(fileType,supportedTypes)){
             return res.status(400).json({
                 success:false,
